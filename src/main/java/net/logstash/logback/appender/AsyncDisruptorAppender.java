@@ -409,6 +409,11 @@ public abstract class AsyncDisruptorAppender<Event extends DeferredProcessingAwa
 
     @Override
     protected void append(Event event) {
+        try {
+            Thread.sleep(0, 1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         prepareForDeferredProcessing(event);
         
         if (!this.disruptor.getRingBuffer().tryPublishEvent(this.eventTranslator, event)) {
